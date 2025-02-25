@@ -29,16 +29,16 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal --collect:"XPlat Code Coverage"
-    # - name: Codecov report
-    #   if: success()
-    #   run: |
-    #     curl -s https://codecov.io/bash > codecov
-    #     chmod +x codecov
-    #     ./codecov -t ${{ secrets.CODECOV_TOKEN }}
-    - name: Upload coverage reports to Codecov
+    - name: Codecov report
+      if: success()
       run: |
-        # Replace `linux` below with the appropriate OS
-        # Options are `alpine`, `linux`, `macos`, `windows`
-        curl -Os https://cli.codecov.io/latest/linux/codecov
+        curl -s https://codecov.io/bash > codecov
         chmod +x codecov
-        ./codecov --verbose upload-process --fail-on-error -t ${{ secrets.CODECOV_TOKEN }} -n 'service'-${{ github.run_id }} -F service -f coverage-service.xml
+        ./codecov -t ${{ secrets.CODECOV_TOKEN }}
+    # - name: Upload coverage reports to Codecov
+    #   run: |
+    #     # Replace `linux` below with the appropriate OS
+    #     # Options are `alpine`, `linux`, `macos`, `windows`
+    #     curl -Os https://cli.codecov.io/latest/linux/codecov
+    #     chmod +x codecov
+    #     ./codecov --verbose upload-process --fail-on-error -t ${{ secrets.CODECOV_TOKEN }} -n 'service'-${{ github.run_id }} -F service -f coverage-service.xml
